@@ -1,0 +1,117 @@
+/**
+ * css definitions for ExpCube vignette
+ *
+ */
+
+
+
+/** --------------------------------------------------------------- **/
+/** Common options for all figures **/
+/** --------------------------------------------------------------- **/
+
+
+/** Margins **/
+par {
+  mai: 1 1 0.5 0.5;
+}
+
+
+/** Generics **/
+points, text, lines, rect, polygon, mtext, legend {
+  xpd: 1;
+  col: #181818;
+}
+
+/** Markers: points, text, etc **/
+points {
+  cex: 1;
+  pch: 19;
+  lwd: 0;
+  col: #999999;
+}
+
+text, mtext, legend {
+  cex: 1.5;
+}
+text {
+  pos: 4;
+  offset: 0.2;
+}
+mtext.x {
+  line: 2.5;
+}
+mtext.y {
+  line: 3.5;
+}
+mtext.main {
+  line: 0.0;
+  font: 1;
+  cex: 1.5;
+  adj: 1;
+}
+lines {
+  lwd: 1.5;
+}
+
+/** Legend **/
+legend {
+  bty: n;
+}
+
+/** Axes **/
+axis {
+  cex: 1;
+  cex.axis: 1;
+  lwd: 1;
+  las: 1;
+  col: #181818;
+  col.ticks: #181818;
+  col.axis: #181818;
+  tck: -0.012;
+}
+
+
+axis.y {
+  line: -0.4;
+}
+axis.x {
+  padj: -1.0;
+}
+
+
+
+/** --------------------------------------------------------------- **/
+/** Line plots **/
+/** --------------------------------------------------------------- **/
+
+points.plotline {
+  pch: 21;
+  cex: 2;
+  lwd: 4;
+  bg: #ffffff;
+}
+lines.plotline {
+  lwd: 4;
+}
+lines.plotline.EX, points.plotline.E {
+  col: #555555;
+}	
+lines.plotline.EX {
+  lty: 1;
+}
+lines.plotline.DE, points.plotline.DE {
+  col: #777777; 
+}
+lines.plotline.DE {
+  lty: 2;
+}
+text.plotline.EX {
+  pos: 1;
+  offset: 2.5;
+}
+text.plotline.DE {
+  pos: 4;
+  offset: 1.5;
+}
+
+

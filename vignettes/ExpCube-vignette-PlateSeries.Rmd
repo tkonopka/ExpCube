@@ -1,0 +1,232 @@
+---
+title: "ExpCube vignette - PlateSeries"
+author: "Tomasz Konopka"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+
+
+
+## [ExpCube vignette]
+# Differential expression analysis using shallow sequencing
+
+In this vignette we will use package ExpCube to explore a small dataset of 16 samples. We will aim to learn about how sequencing depth affects performance of differential expression analysis. We will start with raw expression data and finish with a visualization. 
+
+We will use a dataset embedded into the package that was prepared as follows. Expression profiles of HAP1 cells were first measured using the QuantSeq protocol in 24 shallow replicates. This data was cleaned, pooled together, and then split into 16 bins to create synthetic samples mimicking sequencing runs of various depth (number of reads). Reads in each bin were aligned using GSNAP and expression quantified using Exp3p. 
+
+
+
+
+## Getting started
+
+We first need to install package ExpCube from github and load it,
+
+```{r, results="hide"}
+library("devtools")
+install_github("tkonopka/ExpCube")
+library("ExpCube")
+```
+
+We will also need some other packages (from github and CRAN)
+
+```{r}
+library("Rcssplot")
+library("data.table")
+```
+
+
+
+
+## Setting up
+
+We will need two preliminary tables, which we will load from csv/tsv files stored in the `extdata` directory associated with the package. The filenames are
+   
+```{r}
+summary.file = system.file("extdata", "PlateSeries.longsummary.csv", package="ExpCube")	
+readcounts.file = system.file("extdata", "PlateSeries.readcounts.tsv", package="ExpCube")	
+```
+
+First, let's look at the sample definitions
+
+```{r}
+series.summary = E3LoadPlateConfig(summary.file)
+samplenames = series.summary[,"Sample"]
+```
+
+Here, the ```E3LoadPlateConfig``` is just a wrapper for ```read.table```, but it is convenient if you've got multiple configuration files.
+
+
+Next, let's get an object linking each sample to a sequencing depth (number of reads), and merge this with the previous table,
+
+```{r}
+readcounts = read.table(readcounts.file, header=T, stringsAsFactors=F)	
+series.summary = merge(series.summary, readcounts, all.x =TRUE)
+rownames(series.summary) = series.summary[,"Sample"]
+series.summary = series.summary[samplenames,]
+```
+
+Here is a preview of the result
+
+```{r}
+head(series.summary[, c("Sample", "Plate.96well", "Reads")], n=4)
+```
+
+(We will not need the other columns of the table)
+
+
+
+
+## Analysis
+
+
+### Using expression data
+
+To start the analysis, we need to load expression profiles for our samples. These are stored in files in the `extdata` directory of the package with filenames starting with the sample name and ending with a suffix `exp3p.gene.txt.gz`. We will reach them by specifying a path template, 
+
+```{r}
+path.template = dirname(system.file("extdata", "PlateSeries.longsummary.csv", package="ExpCube"))
+exp.template = paste0(path.template, "/SAMPLE.exp3p.gene.txt.gz")
+```
+
+The text `SAMPLE` is here a placeholder; individual samplenames will be substituted into this template one by one. (A second allowed placeeholder is `PLATE`, which is convenient for larger datasets wherein samples are split by library preparation plate. ) We can now load the entire dataset with one command
+
+```{r, results="hide"}
+seriesdata = E3LoadExp3pGeneData(series.summary[,"Sample"], series.summary[,"Plate.96well"], exp.template)
+```
+
+The output object now contains all the expression profiles and expression intervals for the entire dataset. As an illustration, let's look at gene "MDM2", 
+
+```{r}
+MDM2.id = which(seriesdata$expression[,"Gene"] == "MDM2")	
+seriesdata$expression[MDM2.id, 1:4]
+```
+
+We can see that the expression of sample 1 and sample 3 differ by a factor of 1.2. Let's keep that in mind as we peak into the low and high expression estimates for the same samples,
+
+```{r}
+seriesdata$expression.high[MDM2.id, 1:4]
+seriesdata$expression.low[MDM2.id, 1:4]
+````
+
+We see that the high estimate for sample 3 is higher than the low estimate for sample 1; the two intervals overlap slightly. This is suggestive that the apparent change in expression might not be important/reproducible/significant. 
+
+
+
+### Adjusting expression intervals
+
+The expression intervals in the `seriesdata` object are currently the ones obtained from the raw data files. (We loaded raw data from [exp3p](https://github.com/tkonopka/Exp3p) data files, so these intervals are based on a Poisson model of read counts. If you use data produced by other programs, the interpretation might be different). 
+    
+For various reasons, we might want to adjust these intervals. For example, we might want to widen intervals for genes that we believe are prone to batch effects. In this vignette we will not look at how to select such genes or how to decide how strong such adjustments should be. We will just load a set of adjustments from a data file
+
+```{r}
+rescale.file = system.file("extdata", "KiCube.rescaling.factor.discovery.csv", package="ExpCube")	
+rescale.data = read.table(rescale.file, header=T, stringsAsFactors=F)
+gene.rescaling = rescale.data[, "rescale.factor"]
+names(gene.rescaling) = rescale.data[,"Gene"]
+gene.rescaling["MDM2"]
+```
+
+Here, we see the suggested rescaling factor for gene MDM2 is 5.7. We can now apply this rescaling to our samples
+
+```{r}
+seriesdata.rescaled = E3RescaleIntervals(seriesdata, samplenames, gene.rescaling)
+```
+
+Let's look at the effect of this operation on MDM2, 
+
+```{r}
+seriesdata.rescaled$expression[MDM2.id, 1:4]	
+seriesdata.rescaled$expression.low[MDM2.id, 1:4]	
+seriesdata.rescaled$expression.high[MDM2.id, 1:4]
+```
+
+Note how the base expression values is unchanged, but the interval is now much wider than before. 
+
+
+
+
+### Modeling 
+
+Let's use this dataset to learn how sequencing depth affects ability to perform expression analysis. To this end, let's create an auxilary dataset with additional samples. We will create these samples by shifting the profiles of our existing samples by a factor of 2. That is, the new samples will model an over-expression by a factor of 2. 
+
+```{r}
+seriesdata.OE = seriesdata.rescaled
+for (nowsamp in samplenames) {
+  nowvals = seriesdata.OE$expression[,nowsamp]
+  for (k in c("expression", "expression.low", "expression.high")) {
+    seriesdata.OE[[k]][,paste0(nowsamp, "_2")] =
+            seriesdata.OE[[k]][,nowsamp]+nowvals;                
+  } 
+  rm(nowvals)	    
+}
+``` 
+
+We will need a function to call differential expression. Let's use function `E3DEscore` from the package. It takes two primary arguments, a fold-change capturing effect size and a z-score capturing significance. It outputs a value in [-1, 1] scoring differential expression. (The function can be tuned through additional parameters, see documentation). Here are some examples of scores obtained through default settings
+
+```{r}
+E3DEscore(fc=c(2, 2, 1.5, 1.5, 0.5), z=c(2, 1.5, 2, 1.5, -2))
+```
+
+Now, let's compute the number of expressed genes in each sample (number of genes with expression above a threshold). At the same time, let's also compute the number of differentially expressed genes between our samples and the matching auxilary samples (number of genes with DE score above threshold)
+
+
+```{r}
+series.summary[,"ExpressedGenes"] = 0;
+series.summary[,"useDE"] = 0;
+
+min.expression = 1;    
+min.DEscore = 0.7;
+
+for (nowsamp in samplenames) {     
+  nowexpressed = seriesdata.OE$expression[,nowsamp]>min.expression;         
+  series.summary[nowsamp, "ExpressedGenes"] = sum(nowexpressed)
+        
+  temp = E3GetDEScores(seriesdata.OE, sampleA=paste0(nowsamp,"_2"),
+      refsamples=nowsamp, scorefun=E3DEscore, shiftval=min.expression/100,
+      rankrescale=FALSE)
+  series.summary[nowsamp, "useDE"] = sum(abs(temp)>min.DEscore & nowexpressed)
+     
+  rm(nowexpressed, temp)
+}
+``` 
+
+The results are now encoded into new columns of the `series.summary` table. 
+
+```{r}
+series.summary[,c("Sample", "Reads", "ExpressedGenes", "useDE")]
+```
+
+The number of genes detected as "expressed" is roughly constant, around 12,000, for all samples regardless of sequencing depth. The number of genes that are detected as differential expressed, in contrast, rises steadily with sequencing depth (reads). 
+
+
+
+## Visualization
+
+As a final component of this vignette, let's visualize the modeling results. Let's make a line chart showing the two series we just computed. 
+
+
+```{r}
+myRcss = Rcss(system.file("extdata", "ExpCube.Rcss", package="ExpCube"))
+RcssSetDefaultStyle(myRcss)
+
+E3PlotLines(series.summary, xcolumn="Reads",
+            ycolumns=c("ExpressedGenes", "useDE"), lineclass=c("EX", "DE"),
+            legend=c("Expressed genes", "Genes detectable at FC=2"), legend.at = c(6,2),
+            xlab="Depth (reads)", ylab="Genes", main="Power of shallow sequencing",
+            Rcss=myRcss, Rcssclass="plotline")
+
+```
+
+The first group of statements defines a plotting style used by [Rcssplot](https://github.com/tkonopka/Rcssplot). The last command should display a graph with two series, including smoothed lines.
+
+&nbsp;
+
+&nbsp;
+
+&nbsp;
+

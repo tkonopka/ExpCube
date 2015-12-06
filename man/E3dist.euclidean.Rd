@@ -9,11 +9,7 @@ E3dist.euclidean(dd, samplenames)
 \arguments{
 \item{dd}{- numeric matrix. Columns should contain sample names (next argument)}
 
-\item{samplenames}{- character vector with column names in dd.
-##}
-
-\item{noise.sd}{- numeric. If set >0, the distances will contain a noise element.
-##If the computed distance is D, the output distance will be D + abs(rnorm(1, 0, noise.sd*D))}
+\item{samplenames}{- character vector with column names in dd.}
 }
 \description{
 Compute euclidean distances between all pairs of samples

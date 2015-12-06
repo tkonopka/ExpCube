@@ -21,6 +21,14 @@ E3PlotScatter(xx, yy, items = NULL, outliers = NULL, col = NULL,
 
 \item{outliers}{- character vector. ids of data points drawn as outliers.}
 
+\item{col}{-}
+
+\item{onecol}{-}
+
+\item{items.highlight}{- character vector. Names of items x,y to highlight.}
+
+\item{xlim}{- numeric vector with two elements. range for x axis}
+
 \item{ylim}{- numeric vector with two elements. range for y axis}
 
 \item{xlimwiden}{- numeric. Determines how much wider the actual x range will be relative
@@ -49,8 +57,6 @@ will be highlighted in bold.}
 \item{Rcss}{- Rcss object. Used to style the heatmap with Rcssplot.}
 
 \item{Rcssclass}{- character vector. Classes to tune Rcssplot formatting.}
-
-\item{xlim-}{numeric vector with two elements. range for x axis}
 }
 \description{
 Draw a scatter plot, including line of best fit, correlation measures and labels

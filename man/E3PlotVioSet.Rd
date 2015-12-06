@@ -38,8 +38,6 @@ axis}
 \item{Rcss}{- Rcss object. Used to style the heatmap with Rcssplot.}
 
 \item{Rcssclass}{- character vector. Classes to tune Rcssplot formatting.}
-
-\item{hidedots}{- set TRUE to avoid drawing dots on top of the violins}
 }
 \description{
 Draw a set of violins (using Rcssplot, sm)

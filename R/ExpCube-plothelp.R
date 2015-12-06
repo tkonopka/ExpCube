@@ -7,16 +7,19 @@
 
 
 
+
+
 ##' Draw axes and labels on x/y, using Rcssplot
 ##'
 ##' @param xlim - two element vector. Range of x axis
 ##' @param ylim - two element vector. Range of y axis
 ##' @param xlab - character string. Text to write below x-axis
 ##' @param ylab - character string. Text to write below y-axis
+##' @param xat - numeric vector. Position of labels on x-axis.
 ##' @param RC - Rcss object. Style for formatting the axes using Rcssplot
 ##' @param RCC - character vector. Classes for tuning Rcssplot formating
 ##' @param where - vector containg "x" and/or "y". Determines where axes will be drawn
-##' 
+##'
 ##' @export
 E3Axes = function(xlim, ylim, xlab="", ylab="", xat=NULL,
     RC="default", RCC=c(), where=c("x", "y")) {
@@ -233,23 +236,23 @@ E3DrawMarkerLegend = function(legend=NULL, xlim=c(0,1), ylim=c(0,1), main="",
 ##' "box()" every time it is called
 ##'
 ##' @param x - see vioplot from package vioplot
-##' @param range
-##' @param h
-##' @param ylim
-##' @param names
-##' @param horizontal
-##' @param col
-##' @param border
-##' @param lty
-##' @param lwd
-##' @param rectCol
-##' @param colMed
-##' @param pchMed
-##' @param at
-##' @param add
-##' @param wex
-##' @param drawRect
-##' @param ... 
+##' @param range -
+##' @param h -
+##' @param ylim -
+##' @param names -
+##' @param horizontal -
+##' @param col -
+##' @param border - 
+##' @param lty -
+##' @param lwd -
+##' @param rectCol -
+##' @param colMed -
+##' @param pchMed -
+##' @param at -
+##' @param add -
+##' @param wex -
+##' @param drawRect - 
+##' @param ... -
 ##' 
 ##' @export
 E3Vioplot = function (x, ..., range = 1.5, h = NULL, ylim = NULL, names = NULL, 
@@ -317,7 +320,7 @@ E3Vioplot = function (x, ..., range = 1.5, h = NULL, ylim = NULL, names = NULL,
     if (!add) {
       plot.window(xlim = xlim, ylim = ylim)
       axis(2)
-      axis(1, at = at, label = label)
+      axis(1, at = at, labels = label)
     }
     ##box()
     for (i in 1:n) {
@@ -337,7 +340,7 @@ E3Vioplot = function (x, ..., range = 1.5, h = NULL, ylim = NULL, names = NULL,
     if (!add) {
       plot.window(xlim = ylim, ylim = xlim)
       axis(1)
-      axis(2, at = at, label = label)
+      axis(2, at = at, labels = label)
     }
     ##box()
     for (i in 1:n) {

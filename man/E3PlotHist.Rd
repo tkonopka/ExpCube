@@ -21,6 +21,10 @@ E3PlotHist(histobj, xlim = NULL, ylim = NULL, xlab = "", ylab = "",
 
 \item{main}{- character string. Text to display as title, above heatmap.}
 
+\item{fill}{- logical. Set TRUE to obtain a fill color under the histogram line.}
+
+\item{xat}{- numeric vector. Positions of labels on the x axis.}
+
 \item{Rcss}{- Rcss object. Used to style the heatmap with Rcssplot.}
 
 \item{Rcssclass}{- character vector. Classes to tune Rcssplot formatting.}

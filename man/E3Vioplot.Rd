@@ -12,39 +12,39 @@ E3Vioplot(x, ..., range = 1.5, h = NULL, ylim = NULL, names = NULL,
 \arguments{
 \item{x}{- see vioplot from package vioplot}
 
-\item{...}{}
+\item{...}{-}
 
-\item{range}{}
+\item{range}{-}
 
-\item{h}{}
+\item{h}{-}
 
-\item{ylim}{}
+\item{ylim}{-}
 
-\item{names}{}
+\item{names}{-}
 
-\item{horizontal}{}
+\item{horizontal}{-}
 
-\item{col}{}
+\item{col}{-}
 
-\item{border}{}
+\item{border}{-}
 
-\item{lty}{}
+\item{lty}{-}
 
-\item{lwd}{}
+\item{lwd}{-}
 
-\item{rectCol}{}
+\item{rectCol}{-}
 
-\item{colMed}{}
+\item{colMed}{-}
 
-\item{pchMed}{}
+\item{pchMed}{-}
 
-\item{at}{}
+\item{at}{-}
 
-\item{add}{}
+\item{add}{-}
 
-\item{wex}{}
+\item{wex}{-}
 
-\item{drawRect}{}
+\item{drawRect}{-}
 }
 \description{
 This is a hacked version of vioplot from package vioplot. This version does not

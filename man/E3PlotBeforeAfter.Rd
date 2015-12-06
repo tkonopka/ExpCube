@@ -39,6 +39,8 @@ the position and size (left and right extemes) of boxes in the legend}
 \item{legend}{- character vector of length two. Text labels describing the
 two series of numbers.}
 
+\item{main}{- character string. Title for the plot.}
+
 \item{Rcss}{- Rcss object. Used to style the heatmap with Rcssplot.}
 
 \item{Rcssclass}{- character vector. Classes to tune Rcssplot formatting.}

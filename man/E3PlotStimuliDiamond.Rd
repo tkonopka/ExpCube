@@ -7,8 +7,8 @@
 \usage{
 E3PlotStimuliDiamond(gjh, colmat, gsize, n = 10, spacer = 0.1,
   lab = "All", col.group = NULL, highlight = c(), mai = rep(0.2, 4),
-  maxlim = NULL, xticks = seq(0, 300, 100), Rcss = "default",
-  Rcssclass = "diamond")
+  maxlim = NULL, xticks = seq(0, 300, 100), lineext = 1.2,
+  Rcss = "default", Rcssclass = "diamond")
 }
 \arguments{
 \item{gjh}{- hclust object. Used to produce diamond clustering on LHS.}
@@ -35,6 +35,8 @@ clustering.}
 \item{maxlim}{- numeric. Determines horizontal scale of barplot.}
 
 \item{xticks}{- numeric vector. Values to label on x-axis in the barplot.}
+
+\item{lineext}{- numeric. determines lenght of line labeling highlighted items.}
 
 \item{Rcss}{- Rcss object. Used to style the heatmap with Rcssplot.}
 

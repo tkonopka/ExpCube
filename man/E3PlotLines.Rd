@@ -22,11 +22,15 @@ E3PlotLines(vdat, xcolumn = 1, ycolumns = c(2, 3),
 \item{lineloess}{- logical vector. Determines whether for each line, the line will
 be plotted smoothed (loess) or not.}
 
+\item{xlim}{- numeric vector with two elements. range for x axis}
+
 \item{ylim}{- numeric vector with two elements. range for y axis}
 
 \item{xlab}{- character string. Text to display below x axis}
 
 \item{ylab}{- character string. Text to display below y axis.}
+
+\item{main}{- character string. Text to display as title.}
 
 \item{legend}{- character vector. Text to display in legend}
 
@@ -36,8 +40,6 @@ to place the legends.}
 \item{Rcss}{- Rcss object. Used to style the heatmap with Rcssplot.}
 
 \item{Rcssclass}{- character vector. Classes to tune Rcssplot formatting.}
-
-\item{xlim-}{numeric vector with two elements. range for x axis}
 }
 \description{
 Draw series data as points with smoothed lines (using Rcssplot)

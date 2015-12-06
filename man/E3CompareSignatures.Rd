@@ -12,6 +12,9 @@ E3CompareSignatures(sampleGroups, group.signature = NULL,
 \item{sampleGroups}{- named list of character vectors. Each vector should represent
 a set of samples making up a group.}
 
+\item{group.signature}{- named list of character vectors. Each vector should represent
+the gene set (signature) associated with a group}
+
 \item{signature.ref}{- named character vector. Each element should link a sample name
 to a reference group, e.g. KO_ACTA_R1 would be linked to group KO_None}
 
@@ -19,9 +22,6 @@ to a reference group, e.g. KO_ACTA_R1 would be linked to group KO_None}
 to an expected signature group, e.g. KO_ACTA_R1 would be linked to group WT_ACTA}
 
 \item{numgenes}{- number of genes to use as background in calculation of Fisher metric.}
-
-\item{group.signatures}{- named list of character vectors. Each vector should represent
-the gene set (signature) associated with a group}
 }
 \description{
 Metrics include overlap between observed and expected signatures, JI between observed

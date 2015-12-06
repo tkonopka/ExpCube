@@ -16,6 +16,8 @@ E3Axes(xlim, ylim, xlab = "", ylab = "", xat = NULL, RC = "default",
 
 \item{ylab}{- character string. Text to write below y-axis}
 
+\item{xat}{- numeric vector. Position of labels on x-axis.}
+
 \item{RC}{- Rcss object. Style for formatting the axes using Rcssplot}
 
 \item{RCC}{- character vector. Classes for tuning Rcssplot formating}

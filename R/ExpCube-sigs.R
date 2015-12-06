@@ -135,6 +135,7 @@ E3MakeGroupCovariates = function(covariates=NULL, sampleGroups=NULL) {
 ##' in the glm model
 ##' @param glm.readcounts - logical. Set TRUE to include a term in the glm model
 ##' for read depth.
+##' @param depth.col - column identifier. Column in sigmetrics holding depth data.
 ##' 
 ##' @export
 E3MakeGLMs = function(sigmetrics, group.covariates=NULL,
@@ -270,7 +271,7 @@ E3GetFisherP = function(x,y,background) {
 ##' 
 ##' @param sampleGroups - named list of character vectors. Each vector should represent
 ##' a set of samples making up a group.
-##' @param group.signatures - named list of character vectors. Each vector should represent
+##' @param group.signature - named list of character vectors. Each vector should represent
 ##' the gene set (signature) associated with a group
 ##' @param signature.ref - named character vector. Each element should link a sample name
 ##' to a reference group, e.g. KO_ACTA_R1 would be linked to group KO_None

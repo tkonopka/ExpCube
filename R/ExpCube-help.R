@@ -84,6 +84,20 @@ E3GetExpressedGenes = function(dlist, id.col="Gene", min.expression=1, max.expre
 
 
 
+##' Compute spearman correlations using ranks
+##'
+##' @param xranks - numeric vector
+##' @param yranks - numeric vector
+##' 
+##' @export
+E3SpearmanRhoFromRanks = function (xranks, yranks) 
+{
+    xmid = mean(xranks)
+    ymid = mean(yranks)
+    TA = sum((xranks - xmid) * (yranks - ymid))
+    TB = sqrt(sum((xranks - xmid)^2) * sum((yranks - ymid)^2))
+    return(TA/TB)
+}
 
 
 
@@ -94,6 +108,7 @@ E3GetExpressedGenes = function(dlist, id.col="Gene", min.expression=1, max.expre
 ##' @param dd - numeric matrix. Columns should contain sample names (next argument)
 ##' @param samplenames - character vector with column names
 ##'
+##' @import Rpipelines
 ##' @export
 E3dist.spearman = function(dd, samplenames) {
 
@@ -113,7 +128,7 @@ E3dist.spearman = function(dd, samplenames) {
   
   for (i in 1:(length(samplenames)-1)) {
     for (j in (i+1):length(samplenames)) {      
-      nowdist = 1-spearmanRhoFromRanks(dd[,i], dd[,j]);
+      nowdist = 1-E3SpearmanRhoFromRanks(dd[,i], dd[,j]);
       ans[i,j] = nowdist;
       ans[j,i] = nowdist;
     }
@@ -130,8 +145,6 @@ E3dist.spearman = function(dd, samplenames) {
 ##' 
 ##' @param dd - numeric matrix. Columns should contain sample names (next argument)
 ##' @param samplenames - character vector with column names in dd.
-##' ##@param noise.sd - numeric. If set >0, the distances will contain a noise element.
-##' ##If the computed distance is D, the output distance will be D + abs(rnorm(1, 0, noise.sd*D))
 ##' 
 ##' @export
 E3dist.euclidean = function(dd, samplenames) {
@@ -147,9 +160,6 @@ E3dist.euclidean = function(dd, samplenames) {
     for (i in 1:(length(samplenames)-1)) {
         for (j in (i+1):length(samplenames)) {      
             nowdist = sum((dd[,i]- dd[,j])*(dd[,i]-dd[,j]));
-            ##if (noise.sd>0) {
-            ##    nowdist = nowdist + abs(rnorm(1, 0, nowdist*noise.sd))
-            ##}
             ans[i,j] = nowdist;
             ans[j,i] = nowdist;
         }

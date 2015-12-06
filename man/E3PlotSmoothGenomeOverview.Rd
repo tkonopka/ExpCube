@@ -5,7 +5,7 @@
 \title{Draws a heatmap representation of regional genomic patterns (using Rcssplot)}
 \usage{
 E3PlotSmoothGenomeOverview(fcdata, gene.positions = NULL,
-  categories = list(All = names(seglist)), label.chr = c(),
+  categories = list(All = colnames(fcdata)), label.chr = c(),
   chrlens = NULL, heatcols = c("#00ffff", "#ff00ff"), seg.rescale = 2,
   seg.resolution = 5e+06, seg.hlab = 0.3, seg.vlab = 1e+06,
   legend = NULL, axes.labels = NULL, Rcss = "default",
@@ -26,10 +26,9 @@ the y axis}
 \item{chrlens}{- named vector with lengths of chromosomes (chromosomes will appear
 in this order)}
 
-\item{heatcols}{- numeric vector of lengths two. Determines the color scale of the plot.
-##'}
+\item{heatcols}{- numeric vector of lengths two. Determines the color scale of the plot.}
 
-\item{seg.rescale}{-}
+\item{seg.rescale}{- numeric. Used to modulate color intensity}
 
 \item{seg.resolution}{- numeric. Width of bins to use for smoothing}
 
@@ -45,8 +44,6 @@ y axis to the left and to the right of the heatmap.}
 \item{Rcss}{- Rcss object. Used to style the heatmap with Rcssplot.}
 
 \item{Rcssclass}{- character vector. Classes to tune Rcssplot formatting.}
-
-\item{seg.rescale}{- numeric. Used to modulate color intensity}
 }
 \description{
 The function takes numeric data associated with genes, then performs a smoothing using

@@ -14,14 +14,15 @@
 ##' 
 ##' @param filelist - character vector representing filenames. Function reads tables
 ##' from each file and merges them into one data frame.
-##' 
+##'
+##' @import Rcssplot data.table sm DNAcopy
 ##' @export
 E3LoadPlateConfig = function(filelist) {
     ans = list();
   for (i in 1:length(filelist)) {
       nowfile = filelist[i];
       cat(nowfile, "\n");
-      temp = read.table(nowfile, header=T, stringsAs=F);
+      temp = read.table(nowfile, header=T, stringsAsFactors=F);
       temp = temp[,c("Sample","Group","RefGroup","ExpectedSig","Stimulus","Lane",
           "Plate.96well","Row.96well","Column.96well",
           "RNA.concentration.ng.ul","X260.280","X260.230","Library.concentration.ng.ul","ERCC")];

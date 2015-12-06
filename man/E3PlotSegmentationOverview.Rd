@@ -10,6 +10,8 @@ E3PlotSegmentationOverview(seglist, chrlens = NULL, categories = list(All =
   axes.labels = NULL, Rcss = "default", Rcssclass = "segmentation")
 }
 \arguments{
+\item{seglist}{- list of cbs segmentation data frames}
+
 \item{chrlens}{- named vector with lengths of chromosomes (chromosomes
 will appear in this order)}
 
@@ -34,10 +36,6 @@ y axis to the left and to the right of the heatmap.}
 \item{Rcss}{- Rcss object. Used to style the heatmap with Rcssplot.}
 
 \item{Rcssclass}{- character vector. Classes to tune Rcssplot formatting.}
-
-\item{segdata}{- list of cbs segmentation data frames}
-
-\item{seg.resolution}{- numeric. Width of bins to use for smoothing}
 }
 \description{
 Draws a heatmap representation of a genomic segmentation (using Rcssplot)

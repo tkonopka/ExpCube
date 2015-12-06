@@ -15,8 +15,11 @@
 ##' @param xx - numeric vector with names. x coordinates for points.
 ##' @param yy - numeric vector with names. y coordinates for points
 ##' @param items - character vector. ids of data points to display
-##' @param outliers - character vector. ids of data points drawn as outliers. 
-##' @param xlim- numeric vector with two elements. range for x axis
+##' @param outliers - character vector. ids of data points drawn as outliers.
+##' @param col -
+##' @param onecol -
+##' @param items.highlight - character vector. Names of items x,y to highlight.
+##' @param xlim - numeric vector with two elements. range for x axis
 ##' @param ylim - numeric vector with two elements. range for y axis
 ##' @param xlimwiden - numeric. Determines how much wider the actual x range will be relative
 ##' to xlim. Use this to add some padding around the xlim. 
@@ -228,6 +231,8 @@ E3PlotBoxes = function(vlist, quantiles=c(0, 0.25, 0.5, 0.75, 1),
 ##' @param xlab - character string. Text to display below x axis
 ##' @param ylab - character string. Text to display below y axis.
 ##' @param main - character string. Text to display as title, above heatmap.
+##' @param fill - logical. Set TRUE to obtain a fill color under the histogram line.
+##' @param xat - numeric vector. Positions of labels on the x axis.
 ##' @param Rcss - Rcss object. Used to style the heatmap with Rcssplot.
 ##' @param Rcssclass - character vector. Classes to tune Rcssplot formatting.
 ##'
@@ -284,10 +289,11 @@ E3PlotHist = function(histobj, xlim=NULL, ylim=NULL,
 ##' @param lineclass - character vector. Classes used to style each lines using Rcssplot. 
 ##' @param lineloess - logical vector. Determines whether for each line, the line will
 ##' be plotted smoothed (loess) or not.
-##' @param xlim- numeric vector with two elements. range for x axis
+##' @param xlim - numeric vector with two elements. range for x axis
 ##' @param ylim - numeric vector with two elements. range for y axis
 ##' @param xlab - character string. Text to display below x axis
 ##' @param ylab - character string. Text to display below y axis.
+##' @param main - character string. Text to display as title.
 ##' @param legend - character vector. Text to display in legend
 ##' @param legend.at - numeric vector of length equal to ycolumns. Determines where
 ##' to place the legends.
@@ -358,7 +364,7 @@ E3PlotLines = function(vdat, xcolumn=1, ycolumns=c(2,3),
 
 ##' Draws a heatmap representation of a genomic segmentation (using Rcssplot)
 ##' 
-##' @param segdata - list of cbs segmentation data frames
+##' @param seglist - list of cbs segmentation data frames
 ##' @param chrlens - named vector with lengths of chromosomes (chromosomes
 ##' will appear in this order)
 ##' @param categories - a list splitting the groups into categories (eg. plates)
@@ -366,7 +372,6 @@ E3PlotLines = function(vdat, xcolumn=1, ycolumns=c(2,3),
 ##' @param heatcols -
 ##' @param label.chr - names of chromosomes to label on horizontal axis
 ##' @param seg.rescale - numeric. Used to modulate color intensity 
-##' @param seg.resolution - numeric. Width of bins to use for smoothing
 ##' @param seg.hlab - numeric. Determines spacing between labels near x axis.
 ##' @param seg.vlab - numeric. Determines spacing between labels near y axis.
 ##' @param legend - numeric. Values to use on the legend box.
@@ -498,7 +503,6 @@ E3PlotSegmentationOverview = function(seglist, chrlens=NULL,
 ##' @param chrlens - named vector with lengths of chromosomes (chromosomes will appear
 ##' in this order)
 ##' @param heatcols - numeric vector of lengths two. Determines the color scale of the plot.
-##' ##' @param seg.rescale -
 ##' @param seg.rescale - numeric. Used to modulate color intensity 
 ##' @param seg.resolution - numeric. Width of bins to use for smoothing
 ##' @param seg.hlab - numeric. Determines spacing between labels near x axis.
@@ -511,7 +515,7 @@ E3PlotSegmentationOverview = function(seglist, chrlens=NULL,
 ##' 
 ##' @export
 E3PlotSmoothGenomeOverview = function(fcdata, gene.positions=NULL,
-    categories=list(All=names(seglist)),  label.chr=c(), 
+    categories=list(All=colnames(fcdata)),  label.chr=c(), 
     chrlens=NULL, heatcols=c("#00ffff", "#ff00ff"), 
     seg.rescale = 2, seg.resolution=5e6, seg.hlab=0.3, seg.vlab=1e6,
     legend=NULL, axes.labels=NULL, 
@@ -844,6 +848,7 @@ E3PlotStimulusLegend = function(col.stim, boxwidth=0.1, file=NULL, spacer=0.1,
 ##' @param density - numeric. Density of shading lines on one set of boxes
 ##' @param legend - character vector of length two. Text labels describing the
 ##' two series of numbers.
+##' @param main - character string. Title for the plot.
 ##' @param Rcss - Rcss object. Used to style the heatmap with Rcssplot.
 ##' @param Rcssclass - character vector. Classes to tune Rcssplot formatting.
 ##'
@@ -1007,7 +1012,6 @@ E3PlotBasicHeat = function(dat, legend=NULL,
 ##' @param ylab - character string. Text to display besdie y axis
 ##' @param main - character string. Text to display in the title of the plot
 ##' @param spacer - numeric. Determines space between adjacent violins
-##' @param hidedots - set TRUE to avoid drawing dots on top of the violins
 ##' @param Rcss - Rcss object. Used to style the heatmap with Rcssplot.
 ##' @param Rcssclass - character vector. Classes to tune Rcssplot formatting.
 ##'
@@ -1128,8 +1132,8 @@ E3PlotScatterBubbles = function(x, y,
     
     xnames = names(x)
     
-    xlim = c(0, max(KOgenes.sigs.size)*1.05)
-    ylim = c(0, max(KOgenes.ccle.size)*1.05)
+    xlim = c(0, max(x)*1.05)
+    ylim = c(0, max(y)*1.05)
     
     plot(xlim, ylim, type="n", xlim=xlim, ylim=ylim, axes=F, frame=F, 
          main="", xlab="", ylab="", xaxs="i", yaxs="i")
@@ -1162,20 +1166,22 @@ E3PlotScatterBubbles = function(x, y,
 
 ##' Draw a contour plot with select markers
 ##'
-##' @param x numeric vector with names. Coordinates for x axis. 
-##' @param y numeric vector with names. Coordinates for y axis
-##' @param highlight.label character vector. Names of points to highlight on the plot
-##' @param col color. For highlighting points
-##' @param label logical. Set TRUE to draw text labels next to highlighted points
-##' @param show.fit logical. Set TRUE to display a fitted line through highlighted points
-##' @param xylim numeric vector of length two. Ranges for axes
-##' @param xymajor numeric vector. Location of major tick marks
-##' @param xyminor numeric vector. Location of minor tick marks
-##' @param xlab character string. Label for x axis
-##' @param ylab character string. Label for y axis
-##' @param main character strings. Title of the plot
-##' @param breakrange numeric vector of length 2. Lower and upper bounds for contour plot
-##' @param numbreaks integer. Number of partitions for contour matrix
+##' @param x - numeric vector with names. Coordinates for x axis. 
+##' @param y - numeric vector with names. Coordinates for y axis
+##' @param highlight - character string. names of x,y to highlight.
+##' @param highlight.label - character vector. Names of points to highlight on the plot
+##' @param col - color. For highlighting points
+##' @param label - logical. Set TRUE to draw text labels next to highlighted points
+##' @param density.transformation - obsolete, do not change.
+##' @param show.fit - logical. Set TRUE to display a fitted line through highlighted points
+##' @param xylim - numeric vector of length two. Ranges for axes
+##' @param xymajor - numeric vector. Location of major tick marks
+##' @param xyminor - numeric vector. Location of minor tick marks
+##' @param xlab - character string. Label for x axis
+##' @param ylab - character string. Label for y axis
+##' @param main - character strings. Title of the plot
+##' @param breakrange - numeric vector of length 2. Lower and upper bounds for contour plot
+##' @param numbreaks - integer. Number of partitions for contour matrix
 ##' @param Rcss - Rcss object. Used to style the heatmap with Rcssplot.
 ##' @param Rcssclass - character vector. Classes to tune Rcssplot formatting.
 ##'

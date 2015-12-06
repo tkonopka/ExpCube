@@ -12,37 +12,41 @@ E3PlotContourScatter(x, y, highlight = NULL, col = "#ff0000",
   Rcssclass = "contour")
 }
 \arguments{
-\item{x}{numeric vector with names. Coordinates for x axis.}
+\item{x}{- numeric vector with names. Coordinates for x axis.}
 
-\item{y}{numeric vector with names. Coordinates for y axis}
+\item{y}{- numeric vector with names. Coordinates for y axis}
 
-\item{col}{color. For highlighting points}
+\item{highlight}{- character string. names of x,y to highlight.}
 
-\item{highlight.label}{character vector. Names of points to highlight on the plot}
+\item{col}{- color. For highlighting points}
 
-\item{show.fit}{logical. Set TRUE to display a fitted line through highlighted points}
+\item{highlight.label}{- character vector. Names of points to highlight on the plot}
 
-\item{xylim}{numeric vector of length two. Ranges for axes}
+\item{density.transformation}{- obsolete, do not change.}
 
-\item{xymajor}{numeric vector. Location of major tick marks}
+\item{show.fit}{- logical. Set TRUE to display a fitted line through highlighted points}
 
-\item{xyminor}{numeric vector. Location of minor tick marks}
+\item{xylim}{- numeric vector of length two. Ranges for axes}
 
-\item{xlab}{character string. Label for x axis}
+\item{xymajor}{- numeric vector. Location of major tick marks}
 
-\item{ylab}{character string. Label for y axis}
+\item{xyminor}{- numeric vector. Location of minor tick marks}
 
-\item{main}{character strings. Title of the plot}
+\item{xlab}{- character string. Label for x axis}
 
-\item{breakrange}{numeric vector of length 2. Lower and upper bounds for contour plot}
+\item{ylab}{- character string. Label for y axis}
 
-\item{numbreaks}{integer. Number of partitions for contour matrix}
+\item{main}{- character strings. Title of the plot}
+
+\item{breakrange}{- numeric vector of length 2. Lower and upper bounds for contour plot}
+
+\item{numbreaks}{- integer. Number of partitions for contour matrix}
 
 \item{Rcss}{- Rcss object. Used to style the heatmap with Rcssplot.}
 
 \item{Rcssclass}{- character vector. Classes to tune Rcssplot formatting.}
 
-\item{label}{logical. Set TRUE to draw text labels next to highlighted points}
+\item{label}{- logical. Set TRUE to draw text labels next to highlighted points}
 }
 \description{
 Draw a contour plot with select markers

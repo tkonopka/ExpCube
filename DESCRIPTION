@@ -1,12 +1,18 @@
 Package: ExpCube
 Title: Analysis of cell/stimulus/gene expression data
-Version: 0.0.0.9000
+Version: 0.0.1.0
 Authors@R: person("Tomasz", "Konopka", email = "tomasz.konopka@ludwig.ox.ac.uk", role = c("aut", "cre"))
+Author: Tomasz Konopka <tomasz.konopka@ludwig.ox.ac.uk>
+Maintainer: Tomasz Konopka <tomasz.konopka@ludwig.ox.ac.uk>
 Description: Analysis of cell/stimulus/gene expression data. See README for further details.
 Depends: R (>= 3.1.2)
 Imports:
 	data.table,
+        DNAcopy,
 	sm,
-	Rcssplot
-License: GPL 2
+	Rcssplot,
+	Rpipelines
+License: GPL-2
 LazyData: true
+Suggests: knitr
+VignetteBuilder: knitr

@@ -17,6 +17,8 @@ in the glm model}
 
 \item{glm.readcounts}{- logical. Set TRUE to include a term in the glm model
 for read depth.}
+
+\item{depth.col}{- column identifier. Column in sigmetrics holding depth data.}
 }
 \description{
 This function is rather particular for ExpCube. It creates a series of GLM models,

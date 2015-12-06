@@ -94,7 +94,7 @@ lines.plotline {
   lwd: 4;
 }
 lines.plotline.EX, points.plotline.EX {
-  col: #555555;
+  col: #444444;
 }	
 lines.plotline.EX {
   lty: 1;

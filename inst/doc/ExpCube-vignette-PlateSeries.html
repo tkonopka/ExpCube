@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>[ExpCube vignette]</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+<!-- Styles for R syntax highlighter -->
+<style type="text/css">
+   pre .operator,
+   pre .paren {
+     color: rgb(104, 118, 135)
+   }
+
+   pre .literal {
+     color: #990073
+   }
+
+   pre .number {
+     color: #099;
+   }
+
+   pre .comment {
+     color: #998;
+     font-style: italic
+   }
+
+   pre .keyword {
+     color: #900;
+     font-weight: bold
+   }
+
+   pre .identifier {
+     color: rgb(0, 0, 0);
+   }
+
+   pre .string {
+     color: #d14;
+   }
+</style>
+
+<!-- R syntax highlighter -->
+<script type="text/javascript">
+var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/</gm,"&lt;")}function f(r,q,p){return RegExp(q,"m"+(r.cI?"i":"")+(p?"g":""))}function b(r){for(var p=0;p<r.childNodes.length;p++){var q=r.childNodes[p];if(q.nodeName=="CODE"){return q}if(!(q.nodeType==3&&q.nodeValue.match(/\s+/))){break}}}function h(t,s){var p="";for(var r=0;r<t.childNodes.length;r++){if(t.childNodes[r].nodeType==3){var q=t.childNodes[r].nodeValue;if(s){q=q.replace(/\n/g,"")}p+=q}else{if(t.childNodes[r].nodeName=="BR"){p+="\n"}else{p+=h(t.childNodes[r])}}}if(/MSIE [678]/.test(navigator.userAgent)){p=p.replace(/\r/g,"\n")}return p}function a(s){var r=s.className.split(/\s+/);r=r.concat(s.parentNode.className.split(/\s+/));for(var q=0;q<r.length;q++){var p=r[q].replace(/^language-/,"");if(e[p]){return p}}}function c(q){var p=[];(function(s,t){for(var r=0;r<s.childNodes.length;r++){if(s.childNodes[r].nodeType==3){t+=s.childNodes[r].nodeValue.length}else{if(s.childNodes[r].nodeName=="BR"){t+=1}else{if(s.childNodes[r].nodeType==1){p.push({event:"start",offset:t,node:s.childNodes[r]});t=arguments.callee(s.childNodes[r],t);p.push({event:"stop",offset:t,node:s.childNodes[r]})}}}}return t})(q,0);return p}function k(y,w,x){var q=0;var z="";var s=[];function u(){if(y.length&&w.length){if(y[0].offset!=w[0].offset){return(y[0].offset<w[0].offset)?y:w}else{return w[0].event=="start"?y:w}}else{return y.length?y:w}}function t(D){var A="<"+D.nodeName.toLowerCase();for(var B=0;B<D.attributes.length;B++){var C=D.attributes[B];A+=" "+C.nodeName.toLowerCase();if(C.value!==undefined&&C.value!==false&&C.value!==null){A+='="'+m(C.value)+'"'}}return A+">"}while(y.length||w.length){var v=u().splice(0,1)[0];z+=m(x.substr(q,v.offset-q));q=v.offset;if(v.event=="start"){z+=t(v.node);s.push(v.node)}else{if(v.event=="stop"){var p,r=s.length;do{r--;p=s[r];z+=("</"+p.nodeName.toLowerCase()+">")}while(p!=v.node);s.splice(r,1);while(r<s.length){z+=t(s[r]);r++}}}}return z+m(x.substr(q))}function j(){function q(x,y,v){if(x.compiled){return}var u;var s=[];if(x.k){x.lR=f(y,x.l||hljs.IR,true);for(var w in x.k){if(!x.k.hasOwnProperty(w)){continue}if(x.k[w] instanceof Object){u=x.k[w]}else{u=x.k;w="keyword"}for(var r in u){if(!u.hasOwnProperty(r)){continue}x.k[r]=[w,u[r]];s.push(r)}}}if(!v){if(x.bWK){x.b="\\b("+s.join("|")+")\\s"}x.bR=f(y,x.b?x.b:"\\B|\\b");if(!x.e&&!x.eW){x.e="\\B|\\b"}if(x.e){x.eR=f(y,x.e)}}if(x.i){x.iR=f(y,x.i)}if(x.r===undefined){x.r=1}if(!x.c){x.c=[]}x.compiled=true;for(var t=0;t<x.c.length;t++){if(x.c[t]=="self"){x.c[t]=x}q(x.c[t],y,false)}if(x.starts){q(x.starts,y,false)}}for(var p in e){if(!e.hasOwnProperty(p)){continue}q(e[p].dM,e[p],true)}}function d(B,C){if(!j.called){j();j.called=true}function q(r,M){for(var L=0;L<M.c.length;L++){if((M.c[L].bR.exec(r)||[null])[0]==r){return M.c[L]}}}function v(L,r){if(D[L].e&&D[L].eR.test(r)){return 1}if(D[L].eW){var M=v(L-1,r);return M?M+1:0}return 0}function w(r,L){return L.i&&L.iR.test(r)}function K(N,O){var M=[];for(var L=0;L<N.c.length;L++){M.push(N.c[L].b)}var r=D.length-1;do{if(D[r].e){M.push(D[r].e)}r--}while(D[r+1].eW);if(N.i){M.push(N.i)}return f(O,M.join("|"),true)}function p(M,L){var N=D[D.length-1];if(!N.t){N.t=K(N,E)}N.t.lastIndex=L;var r=N.t.exec(M);return r?[M.substr(L,r.index-L),r[0],false]:[M.substr(L),"",true]}function z(N,r){var L=E.cI?r[0].toLowerCase():r[0];var M=N.k[L];if(M&&M instanceof Array){return M}return false}function F(L,P){L=m(L);if(!P.k){return L}var r="";var O=0;P.lR.lastIndex=0;var M=P.lR.exec(L);while(M){r+=L.substr(O,M.index-O);var N=z(P,M);if(N){x+=N[1];r+='<span class="'+N[0]+'">'+M[0]+"</span>"}else{r+=M[0]}O=P.lR.lastIndex;M=P.lR.exec(L)}return r+L.substr(O,L.length-O)}function J(L,M){if(M.sL&&e[M.sL]){var r=d(M.sL,L);x+=r.keyword_count;return r.value}else{return F(L,M)}}function I(M,r){var L=M.cN?'<span class="'+M.cN+'">':"";if(M.rB){y+=L;M.buffer=""}else{if(M.eB){y+=m(r)+L;M.buffer=""}else{y+=L;M.buffer=r}}D.push(M);A+=M.r}function G(N,M,Q){var R=D[D.length-1];if(Q){y+=J(R.buffer+N,R);return false}var P=q(M,R);if(P){y+=J(R.buffer+N,R);I(P,M);return P.rB}var L=v(D.length-1,M);if(L){var O=R.cN?"</span>":"";if(R.rE){y+=J(R.buffer+N,R)+O}else{if(R.eE){y+=J(R.buffer+N,R)+O+m(M)}else{y+=J(R.buffer+N+M,R)+O}}while(L>1){O=D[D.length-2].cN?"</span>":"";y+=O;L--;D.length--}var r=D[D.length-1];D.length--;D[D.length-1].buffer="";if(r.starts){I(r.starts,"")}return R.rE}if(w(M,R)){throw"Illegal"}}var E=e[B];var D=[E.dM];var A=0;var x=0;var y="";try{var s,u=0;E.dM.buffer="";do{s=p(C,u);var t=G(s[0],s[1],s[2]);u+=s[0].length;if(!t){u+=s[1].length}}while(!s[2]);if(D.length>1){throw"Illegal"}return{r:A,keyword_count:x,value:y}}catch(H){if(H=="Illegal"){return{r:0,keyword_count:0,value:m(C)}}else{throw H}}}function g(t){var p={keyword_count:0,r:0,value:m(t)};var r=p;for(var q in e){if(!e.hasOwnProperty(q)){continue}var s=d(q,t);s.language=q;if(s.keyword_count+s.r>r.keyword_count+r.r){r=s}if(s.keyword_count+s.r>p.keyword_count+p.r){r=p;p=s}}if(r.language){p.second_best=r}return p}function i(r,q,p){if(q){r=r.replace(/^((<[^>]+>|\t)+)/gm,function(t,w,v,u){return w.replace(/\t/g,q)})}if(p){r=r.replace(/\n/g,"<br>")}return r}function n(t,w,r){var x=h(t,r);var v=a(t);var y,s;if(v){y=d(v,x)}else{return}var q=c(t);if(q.length){s=document.createElement("pre");s.innerHTML=y.value;y.value=k(q,c(s),x)}y.value=i(y.value,w,r);var u=t.className;if(!u.match("(\\s|^)(language-)?"+v+"(\\s|$)")){u=u?(u+" "+v):v}if(/MSIE [678]/.test(navigator.userAgent)&&t.tagName=="CODE"&&t.parentNode.tagName=="PRE"){s=t.parentNode;var p=document.createElement("div");p.innerHTML="<pre><code>"+y.value+"</code></pre>";t=p.firstChild.firstChild;p.firstChild.cN=s.cN;s.parentNode.replaceChild(p.firstChild,s)}else{t.innerHTML=y.value}t.className=u;t.result={language:v,kw:y.keyword_count,re:y.r};if(y.second_best){t.second_best={language:y.second_best.language,kw:y.second_best.keyword_count,re:y.second_best.r}}}function o(){if(o.called){return}o.called=true;var r=document.getElementsByTagName("pre");for(var p=0;p<r.length;p++){var q=b(r[p]);if(q){n(q,hljs.tabReplace)}}}function l(){if(window.addEventListener){window.addEventListener("DOMContentLoaded",o,false);window.addEventListener("load",o,false)}else{if(window.attachEvent){window.attachEvent("onload",o)}else{window.onload=o}}}var e={};this.LANGUAGES=e;this.highlight=d;this.highlightAuto=g;this.fixMarkup=i;this.highlightBlock=n;this.initHighlighting=o;this.initHighlightingOnLoad=l;this.IR="[a-zA-Z][a-zA-Z0-9_]*";this.UIR="[a-zA-Z_][a-zA-Z0-9_]*";this.NR="\\b\\d+(\\.\\d+)?";this.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";this.BNR="\\b(0b[01]+)";this.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|\\.|-|-=|/|/=|:|;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";this.ER="(?![\\s\\S])";this.BE={b:"\\\\.",r:0};this.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[this.BE],r:0};this.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[this.BE],r:0};this.CLCM={cN:"comment",b:"//",e:"$"};this.CBLCLM={cN:"comment",b:"/\\*",e:"\\*/"};this.HCM={cN:"comment",b:"#",e:"$"};this.NM={cN:"number",b:this.NR,r:0};this.CNM={cN:"number",b:this.CNR,r:0};this.BNM={cN:"number",b:this.BNR,r:0};this.inherit=function(r,s){var p={};for(var q in r){p[q]=r[q]}if(s){for(var q in s){p[q]=s[q]}}return p}}();hljs.LANGUAGES.cpp=function(){var a={keyword:{"false":1,"int":1,"float":1,"while":1,"private":1,"char":1,"catch":1,"export":1,virtual:1,operator:2,sizeof:2,dynamic_cast:2,typedef:2,const_cast:2,"const":1,struct:1,"for":1,static_cast:2,union:1,namespace:1,unsigned:1,"long":1,"throw":1,"volatile":2,"static":1,"protected":1,bool:1,template:1,mutable:1,"if":1,"public":1,friend:2,"do":1,"return":1,"goto":1,auto:1,"void":2,"enum":1,"else":1,"break":1,"new":1,extern:1,using:1,"true":1,"class":1,asm:1,"case":1,typeid:1,"short":1,reinterpret_cast:2,"default":1,"double":1,register:1,explicit:1,signed:1,typename:1,"try":1,"this":1,"switch":1,"continue":1,wchar_t:1,inline:1,"delete":1,alignof:1,char16_t:1,char32_t:1,constexpr:1,decltype:1,noexcept:1,nullptr:1,static_assert:1,thread_local:1,restrict:1,_Bool:1,complex:1},built_in:{std:1,string:1,cin:1,cout:1,cerr:1,clog:1,stringstream:1,istringstream:1,ostringstream:1,auto_ptr:1,deque:1,list:1,queue:1,stack:1,vector:1,map:1,set:1,bitset:1,multiset:1,multimap:1,unordered_set:1,unordered_map:1,unordered_multiset:1,unordered_multimap:1,array:1,shared_ptr:1}};return{dM:{k:a,i:"</",c:[hljs.CLCM,hljs.CBLCLM,hljs.QSM,{cN:"string",b:"'\\\\?.",e:"'",i:"."},{cN:"number",b:"\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)"},hljs.CNM,{cN:"preprocessor",b:"#",e:"$"},{cN:"stl_container",b:"\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<",e:">",k:a,r:10,c:["self"]}]}}}();hljs.LANGUAGES.r={dM:{c:[hljs.HCM,{cN:"number",b:"\\b0[xX][0-9a-fA-F]+[Li]?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+(?:[eE][+\\-]?\\d*)?L\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+\\.(?!\\d)(?:i\\b)?",e:hljs.IMMEDIATE_RE,r:1},{cN:"number",b:"\\b\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"keyword",b:"(?:tryCatch|library|setGeneric|setGroupGeneric)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\.",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\d+(?![\\w.])",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\b(?:function)",e:hljs.IMMEDIATE_RE,r:2},{cN:"keyword",b:"(?:if|in|break|next|repeat|else|for|return|switch|while|try|stop|warning|require|attach|detach|source|setMethod|setClass)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"literal",b:"(?:NA|NA_integer_|NA_real_|NA_character_|NA_complex_)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"literal",b:"(?:NULL|TRUE|FALSE|T|F|Inf|NaN)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"identifier",b:"[a-zA-Z.][a-zA-Z0-9._]*\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"<\\-(?!\\s*\\d)",e:hljs.IMMEDIATE_RE,r:2},{cN:"operator",b:"\\->|<\\-",e:hljs.IMMEDIATE_RE,r:1},{cN:"operator",b:"%%|~",e:hljs.IMMEDIATE_RE},{cN:"operator",b:">=|<=|==|!=|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||\\$|:",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"%",e:"%",i:"\\n",r:1},{cN:"identifier",b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[hljs.BE],r:0},{cN:"string",b:"'",e:"'",c:[hljs.BE],r:0},{cN:"paren",b:"[[({\\])}]",e:hljs.IMMEDIATE_RE,r:0}]}};
+hljs.initHighlightingOnLoad();
+</script>
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<h2>[ExpCube vignette]</h2>
+
+<h1>Differential expression analysis using shallow sequencing</h1>
+
+<p>In this vignette we will use package ExpCube to explore a small dataset of 16 samples. We will aim to learn about how sequencing depth affects performance of differential expression analysis. We will start with raw expression data and finish with a visualization. </p>
+
+<p>We will use a dataset embedded into the package that was prepared as follows. Expression profiles of HAP1 cells were first measured using the QuantSeq protocol in 24 shallow replicates. This data was cleaned, pooled together, and then split into 16 bins to create synthetic samples mimicking sequencing runs of various depth (number of reads). Reads in each bin were aligned using GSNAP and expression quantified using Exp3p. </p>
+
+<h2>Getting started</h2>
+
+<p>We first need to load the package (if you need to install the package, uncomment the first two lines)</p>
+
+<pre><code class="r">## library(&quot;devtools&quot;)
+## install_github(&quot;tkonopka/ExpCube&quot;)
+library(&quot;ExpCube&quot;)
+</code></pre>
+
+<p>We will also need some other packages (from github and CRAN)</p>
+
+<pre><code class="r">library(&quot;Rcssplot&quot;)
+library(&quot;data.table&quot;)
+</code></pre>
+
+<pre><code>## data.table 1.9.6  For help type ?data.table or https://github.com/Rdatatable/data.table/wiki
+## The fastest way to learn (by data.table authors): https://www.datacamp.com/courses/data-analysis-the-data-table-way
+</code></pre>
+
+<h2>Setting up</h2>
+
+<p>We will need two preliminary tables, which we will load from csv/tsv files stored in the <code>extdata</code> directory associated with the package. The filenames are</p>
+
+<pre><code class="r">summary.file = system.file(&quot;extdata&quot;, &quot;PlateSeries.longsummary.csv&quot;, package=&quot;ExpCube&quot;) 
+readcounts.file = system.file(&quot;extdata&quot;, &quot;PlateSeries.readcounts.tsv&quot;, package=&quot;ExpCube&quot;)   
+</code></pre>
+
+<p>First, let&#39;s look at the sample definitions</p>
+
+<pre><code class="r">series.summary = E3LoadPlateConfig(summary.file)
+</code></pre>
+
+<pre><code>## /software/opt/R/R-3.1.2/lib/R/library/ExpCube/extdata/PlateSeries.longsummary.csv
+</code></pre>
+
+<pre><code class="r">samplenames = series.summary[,&quot;Sample&quot;]
+</code></pre>
+
+<p>Here, the <code>E3LoadPlateConfig</code> is just a wrapper for <code>read.table</code>, but it is convenient if you&#39;ve got multiple configuration files.</p>
+
+<p>Next, let&#39;s get an object linking each sample to a sequencing depth (number of reads), and merge this with the previous table,</p>
+
+<pre><code class="r">readcounts = read.table(readcounts.file, header=T, stringsAsFactors=F)  
+series.summary = merge(series.summary, readcounts, all.x =TRUE)
+rownames(series.summary) = series.summary[,&quot;Sample&quot;]
+series.summary = series.summary[samplenames,]
+</code></pre>
+
+<p>Here is a preview of the result</p>
+
+<pre><code class="r">head(series.summary[, c(&quot;Sample&quot;, &quot;Plate.96well&quot;, &quot;Reads&quot;)], n=4)
+</code></pre>
+
+<pre><code>##                      Sample Plate.96well   Reads
+## HAP1_PoolAB_1 HAP1_PoolAB_1       Series  566857
+## HAP1_PoolAB_2 HAP1_PoolAB_2       Series  915359
+## HAP1_PoolAB_3 HAP1_PoolAB_3       Series 1340940
+## HAP1_PoolAB_4 HAP1_PoolAB_4       Series 1706182
+</code></pre>
+
+<p>(We will not need the other columns of the table)</p>
+
+<h2>Analysis</h2>
+
+<h3>Using expression data</h3>
+
+<p>To start the analysis, we need to load expression profiles for our samples. These are stored in files in the <code>extdata</code> directory of the package with filenames starting with the sample name and ending with a suffix <code>exp3p.gene.txt.gz</code>. We will reach them by specifying a path template, </p>
+
+<pre><code class="r">path.template = dirname(system.file(&quot;extdata&quot;, &quot;PlateSeries.longsummary.csv&quot;, package=&quot;ExpCube&quot;))
+exp.template = paste0(path.template, &quot;/PlateSeries/SAMPLE.exp3p.gene.txt.gz&quot;)
+</code></pre>
+
+<p>The text <code>SAMPLE</code> is here a placeholder; individual samplenames will be substituted into this template one by one. (A second allowed placeeholder is <code>PLATE</code>, which is convenient for larger datasets wherein samples are split by library preparation plate. ) We can now load the entire dataset with one command</p>
+
+<pre><code class="r">seriesdata = E3LoadExp3pGeneData(series.summary[,&quot;Sample&quot;], series.summary[,&quot;Plate.96well&quot;], exp.template)
+</code></pre>
+
+<p>The output object now contains all the expression profiles and expression intervals for the entire dataset. As an illustration, let&#39;s look at gene &ldquo;MDM2&rdquo;, </p>
+
+<pre><code class="r">MDM2.id = which(seriesdata$expression[,&quot;Gene&quot;] == &quot;MDM2&quot;)   
+seriesdata$expression[MDM2.id, 1:4]
+</code></pre>
+
+<pre><code>##       Gene HAP1_PoolAB_1 HAP1_PoolAB_2 HAP1_PoolAB_3
+## 17622 MDM2         118.1         146.3         148.3
+</code></pre>
+
+<p>We can see that the expression of sample 1 and sample 3 differ by a factor of 1.2. Let&#39;s keep that in mind as we peak into the low and high expression estimates for the same samples,</p>
+
+<pre><code class="r">seriesdata$expression.high[MDM2.id, 1:4]
+</code></pre>
+
+<pre><code>##       Gene HAP1_PoolAB_1 HAP1_PoolAB_2 HAP1_PoolAB_3
+## 17622 MDM2         133.7         159.5         159.1
+</code></pre>
+
+<pre><code class="r">seriesdata$expression.low[MDM2.id, 1:4]
+</code></pre>
+
+<pre><code>##       Gene HAP1_PoolAB_1 HAP1_PoolAB_2 HAP1_PoolAB_3
+## 17622 MDM2         103.4         133.4         137.6
+</code></pre>
+
+<p>We see that the high estimate for sample 1 is slightly lower than the low estimate for sample 3; the two intervals do not overlap. This is suggestive that perhaps that the difference in expression for these two samples may be significant. </p>
+
+<h3>Adjusting expression intervals</h3>
+
+<p>The expression intervals in the <code>seriesdata</code> object are currently the ones obtained from the raw data files. (We loaded raw data from <a href="https://github.com/tkonopka/Exp3p">exp3p</a> data files, so these intervals are based on a Poisson model of read counts. If you use data produced by other programs, the interpretation might be different). </p>
+
+<p>For various reasons, we might want to adjust these intervals. For example, we might want to widen intervals for genes that we believe are prone to batch effects. In this vignette we will not look at how to select such genes or how to decide how strong such adjustments should be. We will just load a set of adjustments from a data file</p>
+
+<pre><code class="r">rescale.file = system.file(&quot;extdata&quot;, &quot;KiCube.rescaling.factor.discovery.csv&quot;, package=&quot;ExpCube&quot;)   
+rescale.data = read.table(rescale.file, header=T, stringsAsFactors=F)
+gene.rescaling = rescale.data[, &quot;rescale.factor&quot;]
+names(gene.rescaling) = rescale.data[,&quot;Gene&quot;]
+gene.rescaling[&quot;MDM2&quot;]
+</code></pre>
+
+<pre><code>##  MDM2 
+## 5.007
+</code></pre>
+
+<p>Here, we see the suggested rescaling factor for gene MDM2 is around 5. We can now apply this rescaling to our samples</p>
+
+<pre><code class="r">seriesdata.rescaled = E3RescaleIntervals(seriesdata, samplenames, gene.rescaling)
+</code></pre>
+
+<p>Let&#39;s look at the effect of this operation on MDM2, </p>
+
+<pre><code class="r">seriesdata.rescaled$expression[MDM2.id, 1:4]    
+</code></pre>
+
+<pre><code>##       Gene HAP1_PoolAB_1 HAP1_PoolAB_2 HAP1_PoolAB_3
+## 17622 MDM2         118.1         146.3         148.3
+</code></pre>
+
+<pre><code class="r">seriesdata.rescaled$expression.low[MDM2.id, 1:4]    
+</code></pre>
+
+<pre><code>##       Gene HAP1_PoolAB_1 HAP1_PoolAB_2 HAP1_PoolAB_3
+## 17622 MDM2       39.9908       80.2076       94.2244
+</code></pre>
+
+<pre><code class="r">seriesdata.rescaled$expression.high[MDM2.id, 1:4]
+</code></pre>
+
+<pre><code>##       Gene HAP1_PoolAB_1 HAP1_PoolAB_2 HAP1_PoolAB_3
+## 17622 MDM2      196.2092      212.3924      202.3756
+</code></pre>
+
+<p>Note how the base expression values are unchanged, but the interval are much wider than before. There is clear overlap between the intervals for samples 1 and 3. This is suggestive that the difference in expression may not be important/reproducible/significant after all.</p>
+
+<h3>Modeling</h3>
+
+<p>Let&#39;s use this dataset to learn how sequencing depth affects ability to perform expression analysis. To this end, let&#39;s create an auxilary dataset with additional samples. We will create these samples by shifting the profiles of our existing samples by a factor of 2. That is, the new samples will model an over-expression by a factor of 2. </p>
+
+<pre><code class="r">seriesdata.OE = seriesdata.rescaled
+for (nowsamp in samplenames) {
+  nowvals = seriesdata.OE$expression[,nowsamp]
+  for (k in c(&quot;expression&quot;, &quot;expression.low&quot;, &quot;expression.high&quot;)) {
+    seriesdata.OE[[k]][,paste0(nowsamp, &quot;_2&quot;)] =
+            seriesdata.OE[[k]][,nowsamp]+nowvals;                
+  } 
+  rm(nowvals)       
+}
+</code></pre>
+
+<p>We will need a function to call differential expression. Let&#39;s use function <code>E3DEscore</code> from the package. It takes two primary arguments, a fold-change capturing effect size and a z-score capturing significance. It outputs a value in [-1, 1] scoring differential expression. (The function can be tuned through additional parameters, see documentation). Here are some examples of scores obtained through default settings</p>
+
+<pre><code class="r">E3DEscore(fc=c(2, 2, 1.5, 1.5, 0.5), z=c(2, 1.5, 2, 1.5, -2))
+</code></pre>
+
+<pre><code>## [1]  1.00  0.50  0.50  0.25 -1.00
+</code></pre>
+
+<p>Now, let&#39;s compute the number of expressed genes in each sample (number of genes with expression above a threshold). At the same time, let&#39;s also compute the number of differentially expressed genes between our samples and the matching auxilary samples (number of genes with DE score above threshold)</p>
+
+<pre><code class="r">series.summary[,&quot;ExpressedGenes&quot;] = 0;
+series.summary[,&quot;useDE&quot;] = 0;
+
+min.expression = 1;    
+min.DEscore = 0.7;
+
+for (nowsamp in samplenames) {     
+  nowexpressed = seriesdata.OE$expression[,nowsamp]&gt;min.expression;         
+  series.summary[nowsamp, &quot;ExpressedGenes&quot;] = sum(nowexpressed)
+
+  temp = E3GetDEScores(seriesdata.OE, sampleA=paste0(nowsamp,&quot;_2&quot;),
+      refsamples=nowsamp, scorefun=E3DEscore, shiftval=min.expression/100,
+      rankrescale=FALSE)
+  series.summary[nowsamp, &quot;useDE&quot;] = sum(abs(temp)&gt;min.DEscore &amp; nowexpressed)
+
+  rm(nowexpressed, temp)
+}
+</code></pre>
+
+<p>The results are now encoded into new columns of the <code>series.summary</code> table. </p>
+
+<pre><code class="r">series.summary[,c(&quot;Sample&quot;, &quot;Reads&quot;, &quot;ExpressedGenes&quot;, &quot;useDE&quot;)]
+</code></pre>
+
+<pre><code>##                        Sample   Reads ExpressedGenes useDE
+## HAP1_PoolAB_1   HAP1_PoolAB_1  566857          12666  2864
+## HAP1_PoolAB_2   HAP1_PoolAB_2  915359          13405  4848
+## HAP1_PoolAB_3   HAP1_PoolAB_3 1340940          12616  6572
+## HAP1_PoolAB_4   HAP1_PoolAB_4 1706182          12839  7640
+## HAP1_PoolAB_5   HAP1_PoolAB_5 2074692          12494  8398
+## HAP1_PoolAB_6   HAP1_PoolAB_6 2440130          12767  9014
+## HAP1_PoolAB_7   HAP1_PoolAB_7 2804399          12874  9481
+## HAP1_PoolAB_8   HAP1_PoolAB_8 3232297          12735  9978
+## HAP1_PoolAB_9   HAP1_PoolAB_9 3597440          12728 10311
+## HAP1_PoolAB_10 HAP1_PoolAB_10 3959369          12905 10653
+## HAP1_PoolAB_11 HAP1_PoolAB_11 4328832          12748 10940
+## HAP1_PoolAB_12 HAP1_PoolAB_12 4692689          12767 11143
+## HAP1_PoolAB_13 HAP1_PoolAB_13 5668177          12773 11728
+## HAP1_PoolAB_14 HAP1_PoolAB_14 6699586          12766 12070
+## HAP1_PoolAB_15 HAP1_PoolAB_15 7310787          12730 12160
+## HAP1_PoolAB_16 HAP1_PoolAB_16 9141019          12825 12487
+</code></pre>
+
+<p>The number of genes detected as &ldquo;expressed&rdquo; is roughly constant, around 12,000, for all samples regardless of sequencing depth. The number of genes that are detected as differential expressed, in contrast, rises steadily with sequencing depth (reads). </p>
+
+<h2>Visualization</h2>
+
+<p>As a final component of this vignette, let&#39;s visualize the modeling results. Let&#39;s make a line chart showing the two series we just computed. </p>
+
+<pre><code class="r">myRcss = Rcss(system.file(&quot;extdata&quot;, &quot;ExpCube.Rcss&quot;, package=&quot;ExpCube&quot;))
+RcssSetDefaultStyle(myRcss)
+
+E3PlotLines(series.summary, xcolumn=&quot;Reads&quot;,
+            ycolumns=c(&quot;ExpressedGenes&quot;, &quot;useDE&quot;), lineclass=c(&quot;EX&quot;, &quot;DE&quot;),
+            legend=c(&quot;Expressed genes&quot;, &quot;Genes detectable at FC=2&quot;), legend.at = c(8,2),
+            xlab=&quot;Depth (reads)&quot;, ylab=&quot;Genes&quot;, main=&quot;Power of shallow sequencing&quot;,
+            Rcss=myRcss, Rcssclass=&quot;plotline&quot;)
+</code></pre>
+
+<p><img src="data:image/png;base64,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" alt="plot of chunk unnamed-chunk-18"/> </p>
+
+<p>The first group of statements defines a plotting style used by <a href="https://github.com/tkonopka/Rcssplot">Rcssplot</a>. The last command should display a graph with two series, including smoothed lines.</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+</body>
+
+</html>

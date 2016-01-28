@@ -128,7 +128,7 @@ E3dist.spearman = function(dd, samplenames) {
   
   for (i in 1:(length(samplenames)-1)) {
     for (j in (i+1):length(samplenames)) {      
-      nowdist = 1-E3SpearmanRhoFromRanks(dd[,i], dd[,j]);
+      nowdist = 1-abs(E3SpearmanRhoFromRanks(dd[,i], dd[,j]));
       ans[i,j] = nowdist;
       ans[j,i] = nowdist;
     }

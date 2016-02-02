@@ -4,11 +4,17 @@
 \alias{E3LoadPlateConfig}
 \title{Load sample information from csv files.}
 \usage{
-E3LoadPlateConfig(filelist)
+E3LoadPlateConfig(filelist, columns = c("Sample", "Group", "RefGroup",
+  "ExpectedSig", "Stimulus", "Lane", "Plate.96well", "Row.96well",
+  "Column.96well", "RNA.concentration.ng.ul", "X260.280", "X260.230",
+  "Library.concentration.ng.ul", "ERCC"))
 }
 \arguments{
 \item{filelist}{- character vector representing filenames. Function reads tables
 from each file and merges them into one data frame.}
+
+\item{columns}{- character vector representing columns in the input files to use
+in the outpu}
 }
 \description{
 This function reads one or more csv files and concatenates them into a single data frame.

@@ -14,23 +14,26 @@
 ##' 
 ##' @param filelist - character vector representing filenames. Function reads tables
 ##' from each file and merges them into one data frame.
+##' @param columns - character vector representing columns in the input files to use
+##' in the outpu
 ##'
 ##' @import Rcssplot data.table sm DNAcopy
 ##' @export
-E3LoadPlateConfig = function(filelist) {
+E3LoadPlateConfig = function(filelist,
+    columns=c("Sample","Group","RefGroup","ExpectedSig","Stimulus","Lane",
+        "Plate.96well","Row.96well","Column.96well",
+        "RNA.concentration.ng.ul","X260.280","X260.230","Library.concentration.ng.ul","ERCC")) {
     ans = list();
-  for (i in 1:length(filelist)) {
-      nowfile = filelist[i];
-      cat(nowfile, "\n");
-      temp = read.table(nowfile, header=T, stringsAsFactors=F);
-      temp = temp[,c("Sample","Group","RefGroup","ExpectedSig","Stimulus","Lane",
-          "Plate.96well","Row.96well","Column.96well",
-          "RNA.concentration.ng.ul","X260.280","X260.230","Library.concentration.ng.ul","ERCC")];
-      ans[[i]] = temp;
-  }
-  ans = data.frame(rbindlist(ans), stringsAsFactors=F);
-  rownames(ans) = ans[,"Sample"];
-  return(ans);
+    for (i in 1:length(filelist)) {
+        nowfile = filelist[i];
+        cat(nowfile, "\n");
+        temp = read.table(nowfile, header=T, stringsAsFactors=F);
+        temp = temp[,columns];
+        ans[[i]] = temp;
+    }
+    ans = data.frame(rbindlist(ans), stringsAsFactors=F);
+    rownames(ans) = ans[,"Sample"];
+    return(ans);
 }
 
 

@@ -157,9 +157,6 @@ E3PlotScatter = function(xx, yy, items=NULL, outliers=NULL, col=NULL, onecol=NUL
     }
     Rcssmtext(main, side=3, Rcss=RC, Rcssclass=c(RCC, "main"))
     
-    return(plotxy)
-    
-    ## and that's all!
 }
 
 

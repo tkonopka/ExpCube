@@ -26,6 +26,8 @@
 ##' @param xlab - character string. Text to display below x axis
 ##' @param ylab - character string. Text to display below y axis.
 ##' @param main - character string. Text to display as title, above heatmap.
+##' @param xerr - numeric vector with names. Values of stderr on the x axis for error bars.
+##' @param yerr - numeric vector with names. Values of stderr on the y values for error bars.
 ##' @param labelq - numeric vector of length two. Quantiles that determine which
 ##' items should be highlihted.
 ##' @param cex.rescale - numeric. Rescaling factor for items marked for highlighting.
@@ -42,13 +44,20 @@ E3PlotScatter = function(xx, yy, items=NULL, outliers=NULL, col=NULL, onecol=NUL
     items.highlight=c(),
     xlim=NULL, ylim=NULL, xlimwiden=0.1,    
     xlab=NULL, ylab=NULL, main="",
+    xerr=NULL, yerr=NULL,
     labelq=c(0.02, 0.98), cex.rescale=NULL,
     show.correlation = TRUE, show.glm = FALSE, show.labels = c(),
-    correlation.threshold=1e-4,
+    correlation.threshold=1e-4, add=FALSE,
     Rcss="default", Rcssclass=c()) {
     
     if (is.null(items)) {
         items = names(xx)
+    }
+    
+    if (length(items.highlight)>0) {
+        if (is.null(names(items.highlight))) {
+            names(items.highlight) = items.highlight;
+        }
     }
     
     ## just look at requested items 
@@ -93,12 +102,14 @@ E3PlotScatter = function(xx, yy, items=NULL, outliers=NULL, col=NULL, onecol=NUL
     }
 
     ## start a new scatter plot
-    Rcsspar(Rcss=RC, Rcssclass=RCC)    
-    plot(xlim, ylim, xlim=xlim, ylim=ylim, xlab="", ylab="", 
-         xaxs="i", yaxs="i", type="n", frame=F, axes=F)
-    
-    ## display some axes
-    E3Axes(xlim, ylim, xlab=xlab, ylab=ylab, RC=RC, RCC=RCC)
+    if (!add) {
+        Rcsspar(Rcss=RC, Rcssclass=RCC)    
+        plot(xlim, ylim, xlim=xlim, ylim=ylim, xlab="", ylab="", 
+             xaxs="i", yaxs="i", type="n", frame=F, axes=F)
+        
+        ## display some axes
+        E3Axes(xlim, ylim, xlab=xlab, ylab=ylab, RC=RC, RCC=RCC)
+    }
     
     ## evaluate and display a loess fit
     if (show.glm) {
@@ -120,16 +131,31 @@ E3PlotScatter = function(xx, yy, items=NULL, outliers=NULL, col=NULL, onecol=NUL
     
     items.basic = items[!(items %in% items.highlight)]
     
+    if (!is.null(yerr)) {
+        for (i in 1:length(yerr)) {
+            nown = names(yerr)[i]
+            nowv = yerr[i]
+            Rcsslines(rep(xx[nown], 2), yy[nown]+c(-nowv, nowv), col=col[nown],
+                      Rcss=RC, Rcssclass=c(RCC, "errorbar", "x"))
+        }
+    }
+    if (!is.null(xerr)) {
+        for (i in 1:length(xerr)) {
+            nown = names(xerr)[i]
+            nowv = xerr[i]
+            Rcsslines(xx[nown]+c(-nowv, nowv), rep(yy[nown], 2), col=col[nown],
+                      Rcss=RC, Rcssclass=c(RCC, "errorbar", "y"))
+        }
+    }
     Rcsspoints(xx[items.basic], yy[items.basic], cex=basecex*cex.rescale, col=col[items.basic],
                Rcss=RC, Rcssclass=RCC)
     if (length(items.highlight)>0) {
-        Rcsspoints(xx[items.highlight], yy[items.highlight],
-                   cex=highcex*cex.rescale, col=col[items.highlight],                   
+        Rcsspoints(xx[names(items.highlight)], yy[names(items.highlight)],
+                   cex=highcex*cex.rescale, col=col[names(items.highlight)],                   
                    Rcss=RC, Rcssclass=c(RCC, "highlight"))
-        Rcsstext(xx[items.highlight], yy[items.highlight], labels=items.highlight,
+        Rcsstext(xx[names(items.highlight)], yy[names(items.highlight)], labels=items.highlight,
                  Rcss=RC, Rcssclass=c(RCC, "highlight"))
     }
-    
     
     if (length(show.labels)>0) {
         Rcsstext(xx[names(show.labels)], yy[names(show.labels)], labels=show.labels,

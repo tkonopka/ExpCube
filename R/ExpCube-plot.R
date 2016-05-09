@@ -339,7 +339,7 @@ E3PlotLines = function(vdat, xcolumn=1, ycolumns=c(2,3),
         xlim = c(0, max(vdat[,xcolumn]))
     }
     if (is.null(ylim)) {
-        ylim = c(0, max(vdat[,ycolumns])*1.15)
+        ylim = c(0, max(vdat[,ycolumns])*1.1)
     }
     
     Rcsspar(Rcss=RC, Rcssclass=RCC)
@@ -697,13 +697,23 @@ E3PlotSmoothGenomeOverview = function(fcdata, gene.positions=NULL,
 ##' @param maxlim - numeric. Determines horizontal scale of barplot. 
 ##' @param xticks - numeric vector. Values to label on x-axis in the barplot.
 ##' @param lineext - numeric. determines lenght of line labeling highlighted items.
+##' @param multicolor - logical. Set TRUE to obtain multicolor heatmap. Set FALSE to plot in grayscale
+##' @param heatcolor - color for heatmap when multicolor is set FALSE.
+##' @param legend.height - height of legend (in units as number of bars)
+##' @param dendrogram - logical, set TRUE to replace the heatmap with a dendrogram
+##' @param dendroheight - numberic, a relative measure for dendrogram width
+##' @param xlab.right - x-axis label under bar chart
+##' @param xlab.left - x-axis label under dendrogram
 ##' @param Rcss - Rcss object. Used to style the heatmap with Rcssplot.
 ##' @param Rcssclass - character vector. Classes to tune Rcssplot formatting.
 ##' 
 ##' @export
-E3PlotStimuliDiamond = function(gjh, colmat, gsize, n=10, spacer=0.1, lab="All", 
-    col.group=NULL, highlight=c(), mai=rep(0.2, 4), maxlim=NULL, xticks=seq(0, 300, 100),
-    lineext=1.2,
+E3PlotClusteringDiamond = function(gjh, colmat, gsize, n=10, spacer=0.1, lab="All", 
+    col.group=NULL, highlight=c(), mai=rep(0.2, 4), maxlim=NULL,
+    xticks=seq(0, 300, 100), xticks.dendro=seq(0, 1, 0.25), 
+    lineext=1.2, multicolor=TRUE, heatcolor="#282828", legend.height=4, legend.main="",
+    dendrogram=FALSE, dendroheight=0.8,
+    xlab.right = "Signature size", xlab.left = "Jaccard index distance",
     Rcss="default", Rcssclass="diamond") {
     
     RC=Rcss;
@@ -727,36 +737,104 @@ E3PlotStimuliDiamond = function(gjh, colmat, gsize, n=10, spacer=0.1, lab="All",
     
     ## plot the diamond
     ngroups = length(col.group);
-    
-    ## plot the individual boxes based on gjh
-    for (i in 1:ngroups) {
-        groupi = gjh$labels[gjh$order[i]]
-        for (j in 1:ngroups) {
-            groupj = gjh$labels[gjh$order[j]]
-            ## create a color based on overlap and group colors
-            nowval = min(1, 2*(1-colmat[groupi, groupj]))
-            nowcol = paste0(avgcol(col.group[c(groupi, groupj)]), val2hex(nowval))
-            ## plot a marker on the heatmap
-            if (j<=i & nowcol!="#ffffff") {
-                ##cat(groupi, " ", groupj, " ", nowcol, "\n")
-                nowpolygon = rbind(c(-i, j-1), c(-i+1, j-1), c(-i+1, j), c(-i, j))
+
+
+    if (dendrogram) {
+        n.items = length(gjh$order)
+        height2x = -dendroheight*n.items/(2*max(gjh$height))
+        
+        ## create an object holding position of points
+        labpos = cbind(x=rep(0, n.items), y=seq(0.5, n.items))
+        rownames(labpos) = gjh$label[gjh$order]
+        labpos = labpos[gjh$label,]
+        labpos = split(labpos, seq(1, n.items))        
+        nodepos = list()
                 
-                for (kk in 1:4) {
-                    nowpolygon[kk, ] = rotate45(nowpolygon[kk,])
+        ## plot each level of merging
+        for (i in 1:nrow(gjh$merge)) {
+            nowfrom = gjh$merge[i, 1]
+            nowto = gjh$merge[i, 2]            
+            if (nowfrom<0) {
+                from.coord = labpos[[abs(nowfrom)]]
+            } else {
+                from.coord = nodepos[[nowfrom]]
+            }
+            if (nowto<0) {
+                to.coord = labpos[[abs(nowto)]]
+            } else {
+                to.coord = nodepos[[nowto]]
+            }
+            nowheight = gjh$height[i]*height2x
+            ## draw branching
+            Rcsslines(c(from.coord[1], nowheight, nowheight, to.coord[1]), 
+                      c(from.coord[2], from.coord[2], to.coord[2], to.coord[2]),
+                      Rcss=RC, Rcssclass=c(RCC, "dendrogram"))            
+            ## update coordinates of endpoints
+            nodepos[[i]] =  c(nowheight, (from.coord[2]+to.coord[2])/2)                          
+        }
+        
+        Rcssaxis(1, at=height2x*xticks.dendro, labels=rep("", length(xticks.dendro)),
+                 Rcss=RC, Rcssclass=c(RCC, "x"))
+        Rcssaxis(1, at=height2x*xticks.dendro, labels=xticks.dendro, Rcss=RC, Rcssclass=c(RCC, "x"))
+        Rcssmtext(xlab.left, side=1, Rcss=RC, Rcssclass=c(RCC, "x"))
+    
+    } else {
+        ## plot the individual boxes based on gjh
+        for (i in 1:ngroups) {
+            groupi = gjh$labels[gjh$order[i]]
+            for (j in 1:ngroups) {
+                groupj = gjh$labels[gjh$order[j]]
+                ## create a color based on overlap and group colors
+                nowval = min(1, 2*(1-colmat[groupi, groupj]))
+                if (multicolor) {
+                    nowcol = paste0(avgcol(col.group[c(groupi, groupj)]), val2hex(nowval))
+                } else {
+                    nowcol = paste0(heatcolor, val2hex(nowval))
                 }
-                Rcsspolygon(nowpolygon[,1]/sqrt(2), nowpolygon[,2]/sqrt(2),
-                            Rcss=RC, Rcssclass=c(RCC), col=nowcol,
-                            border=NA)
+                
+                ## plot a marker on the heatmap
+                if (j<=i & nowcol!="#ffffff") {
+                    nowpolygon = rbind(c(-i, j-1), c(-i+1, j-1), c(-i+1, j), c(-i, j))
+                    
+                    for (kk in 1:4) {
+                        nowpolygon[kk, ] = rotate45(nowpolygon[kk,])
+                    }
+                    Rcsspolygon(nowpolygon[,1]/sqrt(2), nowpolygon[,2]/sqrt(2),
+                                Rcss=RC, Rcssclass=c(RCC), col=nowcol,
+                                border=NA)
+                }
             }
         }
+
+        ## draw the axes around the outside
+        Rcsslines(c(0-0.05, -ngroups/2, -0.05), c(0.05, ngroups/2, ngroups-0.05),
+                  Rcss=RC, Rcssclass=RCC)
+        ## draw the stimulus set label on the plot
+        Rcsstext((-ngroups/4)-0.25, (ngroups*3/4)-0.25, lab, pos=3, srt=45, Rcss=RC, Rcssclass=RCC)
+        
+        ## ############################################################
+        ## draw the legend in bottom-left corner
+        legend.res = 45
+        for (i in 1:legend.res) {
+            nowval = (i-0.5)/legend.res
+            nowval = min(1, 2*(1-nowval))
+            nowcol = paste0(heatcolor, val2hex(nowval))
+            Rcssrect(xlim[1]+1, ylim[1]+(((i-1)/legend.res)*legend.height),
+                     xlim[1]+2, ylim[1]+((i/legend.res)*legend.height), col=nowcol, border=NA,
+                     Rcss=RC, Rcssclass=c(RCC, "plain"))
+        }
+        Rcssrect(xlim[1]+1, ylim[1], xlim[1]+2, ylim[1]+legend.height, col=NA,
+                 Rcss=RC, Rcssclass=c(RCC, "highlight"))
+        Rcsstext(xlim[1]+2+spacer, ylim[1], "0",
+                 Rcss=RC, Rcssclass=c(RCC, "plain"))
+        Rcsstext(xlim[1]+2+spacer, ylim[1]+(legend.height/2), "0.5",
+                 Rcss=RC, Rcssclass=c(RCC, "plain"))
+        Rcsstext(xlim[1]+2+spacer, ylim[1]+legend.height, "1",
+                 Rcss=RC, Rcssclass=c(RCC, "plain"))
+        Rcsstext(xlim[1], ylim[1]+legend.height+0.5, legend.main,
+                 Rcss=RC, Rcssclass=c(RCC, "plain"))
+        ## ############################################################
     }
-
-    ## draw the axes around the outside
-    Rcsslines(c(0-0.05, -ngroups/2, -0.05), c(0.05, ngroups/2, ngroups-0.05),
-              Rcss=RC, Rcssclass=RCC)
-
-    ## draw the stimulus set label on the plot
-    Rcsstext((-ngroups/4)-0.25, (ngroups*3/4)-0.25, lab, pos=3, srt=45, Rcss=RC, Rcssclass=RCC)
     
     
     ## draw a barplot on the right hand side
@@ -787,15 +865,14 @@ E3PlotStimuliDiamond = function(gjh, colmat, gsize, n=10, spacer=0.1, lab="All",
                          Rcss=RC, Rcssclass=c(RCC, "plain"))
                 Rcsstext(nowsize+2, i-0.6, nowgroup, col=col.group[nowgroup],
                          Rcssclass=c(RCC, "plain"))
-            }
-            
+            }            
         }
     }
     
     Rcssaxis(1, at=c(0, signif(maxsize/1.2, 1)), labels=c("", ""),
          Rcss=RC, Rcssclass=c(RCC, "x"))
     Rcssaxis(1, at=xticks, labels=xticks, Rcss=RC, Rcssclass=c(RCC, "x"))
-    Rcssmtext("Signature size", side=1, Rcss=RC, Rcssclass=c(RCC, "x"))
+    Rcssmtext(xlab.right, side=1, Rcss=RC, Rcssclass=c(RCC, "x"))
     
 }
 
@@ -953,6 +1030,7 @@ E3PlotBeforeAfter = function(before, after, rhs.lab = NULL, col.stim=NULL,
 ##' to make sure the legend matches with the dat matrix. 
 ##' @param xlabels - logical. Toggle display of labels on x axis.
 ##' @param ylabels - logical. Toggle display of labels on y axis.
+##' @param dividers - logical. Toggle vertical dotted lines between x items.
 ##' @param xlab - character string. Text to display below x axis
 ##' @param ylab - character string. Text to display below y axis.
 ##' @param main - character string. Text to display as title, above heatmap.
@@ -961,7 +1039,7 @@ E3PlotBeforeAfter = function(before, after, rhs.lab = NULL, col.stim=NULL,
 ##' 
 ##' @export
 E3PlotBasicHeat = function(dat, legend=NULL,
-    ylabels=FALSE, xlabels=TRUE,
+    ylabels=FALSE, xlabels=TRUE, dividers=TRUE, 
     xlab="", ylab="", main="", 
     Rcss="default", Rcssclass=c()) {
     
@@ -974,33 +1052,40 @@ E3PlotBasicHeat = function(dat, legend=NULL,
 
     ## find out how much below the x axis the labels should be
     xdown = RcssGetPropertyValueOrDefault(RC, "basicheat", "xdown", default=-0.1, Rcssclass=RCC)
-    ##cat("xdown: ", xdown, "\n")
+    ## absdown will be treated as a boolean
+    ##  - 0 means xdown is a relative measure compare to ylim[2]
+    ##  - >0 means xdown is an absolute measure 
+    absdown = RcssGetPropertyValueOrDefault(RC, "basicheat", "absdown", default=0, Rcssclass=RCC)
     
     Rcsspar(Rcss=RC, Rcssclass=RCC)    
     plot(xlim, ylim, type="n", xlim=xlim, ylim=ylim, xaxs="i", yaxs="i",
          xlab="", ylab="", frame=F, axes=F)
     
-    ## for each segmented sample, for each chromosome, compute and draw smooth FC
-    for (i in 1:ncol(dat)) {        
-        for (j in 1:nrow(dat)) {
-            nowcol = dat[j, i]
-            Rcssrect((i-1), (j-1), i, j, col=nowcol, Rcss=RC, Rcssclass=RCC)
-        }        
+    ## for each box in the heatmap, draw a rectangle pixel
+    for (i in 1:ncol(dat)) {                
+        jj = 1:nrow(dat)
+        ii = rep(i, nrow(dat))
+        Rcssrect(ii-1, jj-1, ii, jj, col=dat[,i], Rcss=RC, Rcssclass=RCC)
     }
     if (xlabels) {
-        for (i in 1:ncol(dat)) {
-            Rcsstext(i-0.5, ylim[2]*xdown, colnames(dat)[i], Rcss=RC, Rcssclass=c(RCC, "x"))  
+        if (absdown>0) {
+            xlabpos = xdown
+        } else {
+            xlabpos = xdown*ylim[2]
         }
+        Rcsstext(seq(1, ncol(dat))-0.5, xlabpos, colnames(dat),
+                 Rcss=RC, Rcssclass=c(RCC, "x"))  
     }
     if (ylabels) {
-        for (i in 1:nrow(dat)) {
-            Rcsstext(0, i-0.5, rownames(dat)[i], pos=2, Rcss=RC, Rcssclass=c(RCC, "y"))
-        }
+        Rcsstext(0, seq(1, nrow(dat))-0.5, rownames(dat), pos=2,
+                 Rcss=RC, Rcssclass=c(RCC, "y"))
     }
     
     ## draw divider lines
-    for (i in 1:(ncol(dat)-1)) {
-        Rcsslines(rep(i,2), ylim, Rcss=RC, Rcssclass=c(RCC, "divider"))
+    if (dividers) {
+        for (i in 1:(ncol(dat)-1)) {
+            Rcsslines(rep(i,2), ylim, Rcss=RC, Rcssclass=c(RCC, "divider"))
+        }
     }
     Rcsslines(c(xlim, rev(xlim), xlim[1]), c(rep(ylim, each=2), ylim[1]),
               Rcss=RC, Rcssclass=c(RCC, "box"))

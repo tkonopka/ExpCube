@@ -5,7 +5,8 @@
 \title{Draw a heatmap using Rcssplot.}
 \usage{
 E3PlotBasicHeat(dat, legend = NULL, ylabels = FALSE, xlabels = TRUE,
-  xlab = "", ylab = "", main = "", Rcss = "default", Rcssclass = c())
+  dividers = TRUE, xlab = "", ylab = "", main = "", Rcss = "default",
+  Rcssclass = c())
 }
 \arguments{
 \item{dat}{- matrix of colors.}
@@ -16,6 +17,8 @@ to make sure the legend matches with the dat matrix.}
 \item{ylabels}{- logical. Toggle display of labels on y axis.}
 
 \item{xlabels}{- logical. Toggle display of labels on x axis.}
+
+\item{dividers}{- logical. Toggle vertical dotted lines between x items.}
 
 \item{xlab}{- character string. Text to display below x axis}
 

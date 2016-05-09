@@ -7,10 +7,11 @@
 \usage{
 E3PlotScatter(xx, yy, items = NULL, outliers = NULL, col = NULL,
   onecol = NULL, items.highlight = c(), xlim = NULL, ylim = NULL,
-  xlimwiden = 0.1, xlab = NULL, ylab = NULL, main = "",
-  labelq = c(0.02, 0.98), cex.rescale = NULL, show.correlation = TRUE,
-  show.glm = FALSE, show.labels = c(), correlation.threshold = 1e-04,
-  Rcss = "default", Rcssclass = c())
+  xlimwiden = 0.1, xlab = NULL, ylab = NULL, main = "", xerr = NULL,
+  yerr = NULL, labelq = c(0.02, 0.98), cex.rescale = NULL,
+  show.correlation = TRUE, show.glm = FALSE, show.labels = c(),
+  correlation.threshold = 1e-04, add = FALSE, Rcss = "default",
+  Rcssclass = c())
 }
 \arguments{
 \item{xx}{- numeric vector with names. x coordinates for points.}
@@ -39,6 +40,10 @@ to xlim. Use this to add some padding around the xlim.}
 \item{ylab}{- character string. Text to display below y axis.}
 
 \item{main}{- character string. Text to display as title, above heatmap.}
+
+\item{xerr}{- numeric vector with names. Values of stderr on the x axis for error bars.}
+
+\item{yerr}{- numeric vector with names. Values of stderr on the y values for error bars.}
 
 \item{labelq}{- numeric vector of length two. Quantiles that determine which
 items should be highlihted.}

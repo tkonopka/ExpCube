@@ -1066,6 +1066,11 @@ E3PlotBasicHeat = function(dat, legend=NULL,
         jj = 1:nrow(dat)
         ii = rep(i, nrow(dat))
         Rcssrect(ii-1, jj-1, ii, jj, col=dat[,i], Rcss=RC, Rcssclass=RCC)
+        dat.na = is.na(dat[,i])
+        if (sum(dat.na)>0) {
+            Rcssrect((ii-1)[dat.na], (jj-1)[dat.na], ii[dat.na], jj[dat.na],
+                     Rcss=RC, Rcssclass=c(RCC, "NA"))
+        }
     }
     if (xlabels) {
         if (absdown>0) {

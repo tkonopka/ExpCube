@@ -2,7 +2,7 @@
 
 ExpCube is an R package for analysis of gene expression data, e.g. RNA-seq data, from experiments with large numbers of samples and conditions. 
 
-The package is developed to support analysis in [Gapp et al]()
+The package is developed to support analysis in [Gapp et al](http://msb.embopress.org/content/12/8/879)
 
 
 
@@ -74,7 +74,7 @@ The package depends on some third-party packages.
 - [DNAcopy](https://www.bioconductor.org/packages/release/bioc/html/DNAcopy.html) - segmentation of signals
 - [Rcssplot](https://github.com/tkonopka/Rcssplot) - customization of graphics functions. 
 
-To cite the package codebase or data organization principles, please link to [Gapp et al]().
+To cite the package codebase or data organization principles, please link to [Gapp et al](http://msb.embopress.org/content/12/8/879).
 
 
 

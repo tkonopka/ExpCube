@@ -1,6 +1,6 @@
 Package: ExpCube
 Title: Analysis of cell/stimulus/gene expression data
-Version: 0.0.1.0
+Version: 1.0.0.0
 Authors@R: person("Tomasz", "Konopka", email = "tomasz.konopka@ludwig.ox.ac.uk", role = c("aut", "cre"))
 Author: Tomasz Konopka <tomasz.konopka@ludwig.ox.ac.uk>
 Maintainer: Tomasz Konopka <tomasz.konopka@ludwig.ox.ac.uk>
